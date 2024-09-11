@@ -17,8 +17,7 @@ import { handler } from 'cm-idempotencia';
 
 const exampleRouteHandler = handler({
     serviceName: 'cm-service-example-name',
-    keyId: 'process_id',
-    isPubsub: true,
+    keyId: ['key1', 'key2'], // Puedes colocar multiples  accesos del objeto y el los concatenara para realizar una llave unica -> Ejemplo: key1-key2
 });
 ```
 
@@ -53,7 +52,7 @@ start();
 #### Campos
 
 -   `serviceName`: Nombre del servicio, esto sera usado como nombre de la colección dentro de la instancia de redis. Se puede pasar cualquier nombre pero se recomienda que sea el nombre del servicio para envitar conflictos en caso de que la instancia de redis sea compartida.
--   `keyId`: El nombre de la propiedad que contiene el identificador de la petición, el nombre que se le pase tiene que existir en el body de la petición. Siguiendo este ejemplo, en el body tiene que existir un campo `process_id` que contiene el un identificador único de la petición, de lo contrario habrá un error. Si nuestro identificar se encuentro en un subObjeto, se puede pasar el nombre del campo con un punto, ejemplo: `subObjeto.process_id`.
+-   `keyId`: El nombre de la propiedad que contiene el identificador de la petición, el nombre que se le pase tiene que existir en el body de la petición. Siguiendo este ejemplo, en el body tiene que existir un campo `process_id` que contiene el un identificador único de la petición, de lo contrario habrá un error.
 -   `isPubsub`: En caso que sea por un topic de PubSub.
 
 Después cuando se defina la ruta se utiliza el **handler** de esta manera:

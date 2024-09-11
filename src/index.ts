@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'module-alias/register';
 import { RouteShorthandOptions } from 'fastify';
 import { afterRequest } from './application/services';
 import { beforeRequest } from './application/services';

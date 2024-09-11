@@ -15,7 +15,7 @@ export const beforeRequest = async (
     config: IdempotenceConfig,
 ): Promise<FastifyReply | HookHandlerDoneFunction | void> => {
     const { keyId, serviceName } = config;
-    const body = config.isPubsub ? getPubsubBody(req.body) : req.body;
+    const body = getPubsubBody(req.body) ?? req.body;
     const db = CONTAINER.get(RedisService);
     const id = getId(keyId, body);
     if (!id) {

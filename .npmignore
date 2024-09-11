@@ -1,0 +1,45 @@
+# Git and IDE files
+.git/
+.idea/
+
+# Node.js dependencies
+node_modules/
+
+# Own Files
+src/
+
+
+# Logs
+npm-debug.log*
+
+# TypeScript cache and compiled files
+*.tsbuildinfo
+.tscache/
+tsconfig.build.json
+tsconfig.json
+history
+commitlint.config.js
+
+# Test-related files
+test/
+coverage/
+
+# Example/demo files (if you have any)
+example/
+
+# Miscellaneous
+.gitignore
+.editorconfig
+.eslintignore
+.eslintrc.js
+.prettierrc.js
+.versionrc
+.commitlint.config.js
+.circle.yml
+yarn.lock
+Gruntfile.js
+tslint.json
+
+# Config files that are not needed in the published package
+jest.config.js
+setup.sh

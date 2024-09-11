@@ -1,6 +1,6 @@
 {
     "name": "cm-idempotencia-sifa",
-    "version": "1.0.2",
+    "version": "1.1.2",
     "main": "dist/index.js",
     "description": "Libreria para el manejo de la idempotencia",
     "license": "UNLICENSED",
@@ -28,14 +28,14 @@
         "sifa"
     ],
     "dependencies": {
-        "@fastify/cors": "^8.3.0",
-        "@fastify/formbody": "^7.4.0",
-        "@fastify/helmet": "^11.0.0",
+        "@fastify/cors": "^7.0.0",
+        "@fastify/formbody": "^6.0.0",
+        "@fastify/helmet": "^8.0.0",
         "@fastify/swagger": "^6.0.0",
         "@google-cloud/firestore": "5.0.2",
         "crypto": "^1.0.1",
         "dotenv": "^16.0.0",
-        "fastify": "^4.21.0",
+        "fastify": "^3.28.0",
         "inversify": "6.0.1",
         "joi": "17.6.0",
         "module-alias": "2.2.2",
@@ -63,6 +63,7 @@
         "standard-version": "9.3.2",
         "ts-jest": "27.1.4",
         "ts-node": "10.7.0",
+        "tsc-alias": "^1.8.10",
         "tsc-watch": "5.0.3",
         "typescript": "5.1.5"
     },

@@ -1,5 +1,5 @@
 export interface IdempotenceConfig {
-    keyId: string;
+    keyId: string[];
     serviceName: string;
-    isPubsub: boolean;
+    isPubsub?: boolean;
 }
