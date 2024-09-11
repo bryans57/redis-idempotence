@@ -1,0 +1,82 @@
+{
+    "name": "cm-idempotencia",
+    "version": "1.3.2",
+    "main": "dist/index.js",
+    "description": "Libreria para el manejo de la idempotencia",
+    "license": "UNLICENSED",
+    "author": {
+        "email": "bryanscm1@gmail.com",
+        "name": "Bryan Cárdenas"
+    },
+    "scripts": {
+        "build": "rimraf dist && tsc -p tsconfig.build.json",
+        "lint": "eslint . --ext .ts --fix",
+        "format": "prettier --write \"./src/**/*.ts\"",
+        "format-check": "prettier --list-different \"./src/**/*.ts\"",
+        "dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/index.js\"",
+        "start": "node dist/index.js",
+        "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/index.js\"",
+        "test": "jest --color --verbose --no-cache",
+        "coverage": "jest --coverage",
+        "release": "standard-version",
+        "husky:install": "husky install",
+        "pre-commit": "yarn test && yarn lint"
+    },
+    "keywords": [
+        "idempotend-library",
+        "multiples-keys",
+        "sifa"
+    ],
+    "dependencies": {
+        "@fastify/swagger": "^6.0.0",
+        "@google-cloud/firestore": "5.0.2",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.0.0",
+        "inversify": "6.0.1",
+        "joi": "17.6.0",
+        "module-alias": "2.2.2",
+        "pg-promise": "^10.11.1",
+        "redis": "^3.1.2",
+        "reflect-metadata": "0.1.13",
+        "@fastify/cors": "^8.3.0",
+        "@fastify/formbody": "^7.4.0",
+        "@fastify/helmet": "^11.0.0",
+        "fastify": "^4.21.0"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "16.2.4",
+        "@commitlint/config-conventional": "16.2.4",
+        "@types/jest": "27.4.1",
+        "@types/node": "^18.15.3",
+        "@types/redis": "^2.8.32",
+        "@types/supertest": "2.0.12",
+        "@typescript-eslint/eslint-plugin": "5.21.0",
+        "@typescript-eslint/parser": "5.21.0",
+        "eslint": "8.14.0",
+        "eslint-config-prettier": "8.5.0",
+        "eslint-plugin-prettier": "4.0.0",
+        "husky": "7.0.4",
+        "jest": "27.5.1",
+        "mock-cloud-firestore": "^0.12.0",
+        "prettier": "2.6.2",
+        "rimraf": "3.0.2",
+        "standard-version": "9.3.2",
+        "ts-jest": "27.1.4",
+        "ts-node": "10.7.0",
+        "tsc-watch": "5.0.3",
+        "typescript": "5.1.5"
+    },
+    "_moduleAliases": {
+        "@application": "dist/application",
+        "@domain": "dist/domain",
+        "@infrastructure": "dist/infrastructure",
+        "@configuration": "dist/configuration",
+        "@util": "dist/util"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn pre-commit",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    }
+}
