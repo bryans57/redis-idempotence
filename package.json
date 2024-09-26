@@ -1,6 +1,6 @@
 {
     "name": "cm-idempotencia-sifa",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "main": "dist/index.js",
     "description": "Libreria para el manejo de la idempotencia",
     "license": "UNLICENSED",
