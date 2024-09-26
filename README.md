@@ -1,11 +1,11 @@
-# cm-idempotencia
+# cm-idempotencia-sifa
 
 Librería para implementar fácilmente el modelo de idempotencia en una api hecha en fastify.
 
 ## Instalación
 
 ```bash
-yarn add cm-idempotencia
+yarn add cm-idempotencia-sifa
 ```
 
 ## Implementación
