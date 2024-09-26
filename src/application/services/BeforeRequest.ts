@@ -14,7 +14,7 @@ export const beforeRequest = async (
     _done: HookHandlerDoneFunction,
     config: IdempotenceConfig,
 ): Promise<FastifyReply | HookHandlerDoneFunction | void> => {
-    const { keyId, serviceName } = config;
+    const { keyId, serviceName, expireTime } = config;
     const body = getPubsubBody(req.body) ?? req.body;
     const db = CONTAINER.get(RedisService);
     const id = getId(keyId, body);
@@ -28,22 +28,30 @@ export const beforeRequest = async (
     }
     const status = await db.get<StatusModel>(`${serviceName}-${id}`);
     if (!status) {
-        await createStatus(serviceName, id, db);
+        await createStatus(serviceName, id, db, expireTime);
     } else {
         if (status.status === 'terminado') {
             return reply.code(200).send(reqAlreadyDone(id, req));
         }
         if (status.status === 'error') {
-            await db.set<StatusModel>(`${serviceName}-${id}`, {
-                retry: status.retry + 1,
-                status: 'procesando',
-            });
+            await db.set<StatusModel>(
+                `${serviceName}-${id}`,
+                {
+                    retry: status.retry + 1,
+                    status: 'procesando',
+                },
+                expireTime,
+            );
         }
         if (status.status === 'procesando') {
-            await db.set<StatusModel>(`${serviceName}-${id}`, {
-                retry: status.retry + 1,
-                status: 'procesando',
-            });
+            await db.set<StatusModel>(
+                `${serviceName}-${id}`,
+                {
+                    retry: status.retry + 1,
+                    status: 'procesando',
+                },
+                expireTime,
+            );
 
             reply.code(500).send(reqInPorcess(id, req));
         }

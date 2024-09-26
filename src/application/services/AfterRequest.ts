@@ -12,7 +12,7 @@ export const afterRequest = async (
     reply: FastifyReply,
     config: IdempotenceConfig,
 ): Promise<FastifyReply | void> => {
-    const { keyId, serviceName } = config;
+    const { keyId, serviceName, expireTime } = config;
     const body = getPubsubBody(req.body) ?? req.body;
     const db = CONTAINER.get(RedisService);
     const id = getId(keyId, body);
@@ -28,15 +28,23 @@ export const afterRequest = async (
     const { statusCode } = reply;
     const status = await db.get<StatusModel>(`${serviceName}-${id}`);
     if (statusCode === 200 || statusCode === 201) {
-        await db.set<StatusModel>(`${serviceName}-${id}`, {
-            status: 'terminado',
-            retry: status?.retry ?? 0,
-        });
+        await db.set<StatusModel>(
+            `${serviceName}-${id}`,
+            {
+                status: 'terminado',
+                retry: status?.retry ?? 0,
+            },
+            expireTime,
+        );
     }
     if (isError(statusCode)) {
-        await db.set<StatusModel>(`${serviceName}-${id}`, {
-            status: 'error',
-            retry: status?.retry ?? 0,
-        });
+        await db.set<StatusModel>(
+            `${serviceName}-${id}`,
+            {
+                status: 'error',
+                retry: status?.retry ?? 0,
+            },
+            expireTime,
+        );
     }
 };

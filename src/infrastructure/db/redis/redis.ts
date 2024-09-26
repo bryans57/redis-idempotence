@@ -8,6 +8,8 @@ import { getRedisConnection } from './adapter';
 @injectable()
 export class RedisService {
     private redis = CONTAINER.get<RedisClient>(TYPES.RedisAdapter);
+    private EXPIRE_TIME = 21600;
+
     private reconnect = (): void => {
         if (!this.redis.connected) {
             this.redis.quit();
@@ -61,11 +63,11 @@ export class RedisService {
             throw new RedisException(message as string, stack as string);
         }
     }
-    async set<T>(key: string, value: T): Promise<boolean> {
+    async set<T>(key: string, value: T, expireTime = this.EXPIRE_TIME): Promise<boolean> {
         try {
             const data = typeof value === 'object' ? JSON.stringify(value) : String(value);
             const save = this.redis.set(key, data);
-            this.redis.expire(key, 691200);
+            this.redis.expire(key, expireTime);
             return save;
         } catch ({ message, stack }) {
             this.reconnect();

@@ -18,6 +18,8 @@ import { handler } from 'cm-idempotencia';
 const exampleRouteHandler = handler({
     serviceName: 'cm-service-example-name',
     keyId: ['key1', 'key2'], // Puedes colocar multiples  accesos del objeto y el los concatenara para realizar una llave unica -> Ejemplo: key1-key2
+    isPubsub: false, // Solo cambia el mensaje de respuesta, por default va false
+    expireTime: 60, // Tiempo de expiracion de la llave en segundos, por default va 21600 - Equivale a 6 hora
 });
 ```
 
