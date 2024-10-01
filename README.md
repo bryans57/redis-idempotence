@@ -1,47 +1,57 @@
-# cm-idempotencia-sifa
+# redis-idempotence
 
-Librería para implementar fácilmente el modelo de idempotencia en una api hecha en fastify.
+Library to easily implement the idempotence model in an api made in fastify.
 
-## Instalación
+## Installation
 
 ```bash
-yarn add cm-idempotencia-sifa
+yarn add redis-idempotence
 ```
 
-## Implementación
+## Implementation
 
-Importar el método **handler** de **cm-idempotencia** y definir los valores asi:
+Import the **handler** method from **redis-idempotence** and define the values like this:
 
 ```typescript
-import { handler } from 'cm-idempotencia';
+import { handler } from 'redis-idempotence';
 
 const exampleRouteHandler = handler({
     serviceName: 'cm-service-example-name',
-    keyId: ['key1', 'key2'], // Puedes colocar multiples  accesos del objeto y el los concatenara para realizar una llave unica -> Ejemplo: key1-key2
-    isPubsub: false, // Solo cambia el mensaje de respuesta, por default va false
-    expireTime: 60, // Tiempo de expiracion de la llave en segundos, por default va 21600 - Equivale a 6 hora
+    keyId: ['key1', 'key2'],
+    expireTime?: 60,
 });
 ```
 
-**Implementación de las dependencias de la librería**
+### Explain fields
 
-Buscar la función en nuestro código donde se tenga implementado el servidor (Express, Fastify, etc). Y llamar la función `dependenciasIdempotencia()`, se puede llamar en cualquier parte de la ejecución del flujo de la aplicación, la idea principal es que se ejecute siempre que inicia nuestro servidor.
+|     Field     | Description                                                                                                                                                                                                                                                                                                               |
+|:-------------:|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `serviceName` | Name of the service, used as the name of the collection within the Redis instance. It is recommended to use the service name to avoid conflicts if the Redis instance is shared.                                                                                                                                          |
+|    `keyId`    | The name of the property that contains the request identifier. This property must exist in the request body (*The key identifier can be create for many properties*). For example, the body should include a field `key1` and `key2` that holds the identifier like `${serviceName}_${keyId}` where `keyId` = `key1-key2` |
+| `expireTime`  | Expiration time of the key in seconds, by default it is 21600 - Equivalent to 6 hours.                                                                                                                                                                                                                                    |
+
+
+
+### Implementation of the library dependencies 
+
+Search for the function in our code where the server is implemented (Fastify). And call the `startIdempDependencies()` function, it can be called anywhere in the execution of the application flow, the main idea is that it is always executed when our server starts.
+
 
 **Ejemplo Fastify**
 
 ```typescript
 import { application } from './Application';
 import { createDependencyContainer } from '@configuration';
-import { dependenciasIdempotencia } from 'cm-idempotencia'; //Importar la funcion desde la libreria
+import { dependenciasIdempotencia } from 'redis-idempotence'; // Import the library and call the function
 import { ENV } from '@util';
 
 const start = async () => {
-    // Iniciar el servidor
+    // Start the server
     const port = ENV.PORT;
     try {
         const server = await application.listen(port, '0.0.0.0');
         createDependencyContainer();
-        dependenciasIdempotencia(); //Llamar la funcion mencionada despues de iniciar el servidor
+        dependenciasIdempotencia(); // Call the function
         console.log(`Application running on ${server}`);
     } catch (error) {
         console.error(error);
@@ -51,27 +61,34 @@ const start = async () => {
 start();
 ```
 
-#### Campos
+### Implementation of the route
 
--   `serviceName`: Nombre del servicio, esto sera usado como nombre de la colección dentro de la instancia de redis. Se puede pasar cualquier nombre pero se recomienda que sea el nombre del servicio para envitar conflictos en caso de que la instancia de redis sea compartida.
--   `keyId`: El nombre de la propiedad que contiene el identificador de la petición, el nombre que se le pase tiene que existir en el body de la petición. Siguiendo este ejemplo, en el body tiene que existir un campo `process_id` que contiene el un identificador único de la petición, de lo contrario habrá un error.
--   `isPubsub`: En caso que sea por un topic de PubSub.
+Finally, we implement the route in the following way:
 
-Después cuando se defina la ruta se utiliza el **handler** de esta manera:
-
-```ts
+```typescript
 application.post(`/example-route`, exampleRouteHandler, exampleRoute);
 ```
 
-#### NOTA:
+If you use schemas or any other additional configuration, you can implement it in the following way:
 
-Se debe tener una instancia de redis lista para que la libreria pueda funcionar. Definir como variables de entorno los siguientes valores: `REDIS_HOST` y `REDIS_PORT`
+```typescript
+application.post(
+    `/example-route`,
+    { schema: your-schema, ...exampleRouteHandler },
+    exampleRoute,
+);
+```
+
+### Note
+
+You must have a redis instance ready for the library to work. Define the following values as environment variables: `REDIS_HOST` and `REDIS_PORT`
 
 ## REDIS_CONNECTION_LOCAL_ENV
 
-Esta es una variable de entorno que debe ser definida, su valor es boleano y será `true` cuando el redis a utilizar este definido localmente, ósea dentro del mismo contenedor de docker de la aplicación (docker compose). A continuación un ejemplo:
+This is an environment variable that must be defined, its value is boolean and will be `true` when the redis to be used is defined locally, that is, within the same docker container as the application (docker compose). Here is an example:
 
-_Archivo docker-compose.yml_
+_File docker-compose.yml_
+
 
 ```yml
 version: '3.7'
@@ -81,7 +98,6 @@ services:
         restart: always
         command: redis-server --bind 0.0.0.0
 ```
+In this case the redis is defined in the docker-compose, in the same file the container of our application will be defined. REDIS_CONNECTION_LOCAL_ENV will have a value of `true` and will refer to the redis container called `redis` the connection will be automatic.
 
-En este caso el redis esta definido en el docker-compose, en el mismo archivo estará definido el contenedor de nuestra aplicación. REDIS_CONNECTION_LOCAL_ENV tendrá un valor de `true` y hará referencia al contenedor de redis llamado `redis` la conexión será automática.
-
-Si el redis es externo y necesitamos el `REDIS_HOST` y `REDIS_PORT` entonces REDIS_CONNECTION_LOCAL_ENV tendrá un valor de `false`
+If the redis is defined in another container, the value of REDIS_CONNECTION_LOCAL_ENV will be `false` and the `REDIS_HOST` and `REDIS_PORT` environment variables must be defined.

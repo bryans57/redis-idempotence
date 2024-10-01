@@ -4,11 +4,12 @@ import { CONTAINER, TYPES } from '../../../configuration';
 import { promisify } from 'util';
 import { RedisException } from '../../../domain/exceptions';
 import { getRedisConnection } from './adapter';
+import { ENV } from '../../../util/Env';
 
 @injectable()
 export class RedisService {
     private redis = CONTAINER.get<RedisClient>(TYPES.RedisAdapter);
-    private EXPIRE_TIME = 21600;
+    private EXPIRE_TIME = ENV.EXPIRE_TME;
 
     private reconnect = (): void => {
         if (!this.redis.connected) {
@@ -32,6 +33,7 @@ export class RedisService {
             throw new RedisException(e.message as string, e.stack as string);
         }
     }
+
     async hget<T>(key: string, field: string): Promise<T | undefined> {
         try {
             const getAsync = promisify(this.redis.hget).bind(this.redis);
@@ -43,6 +45,7 @@ export class RedisService {
         }
         return undefined;
     }
+
     async get<T>(key: string): Promise<T | null> {
         try {
             const getAsync = promisify(this.redis.get).bind(this.redis);
@@ -53,6 +56,7 @@ export class RedisService {
             throw new RedisException(message as string, stack as string);
         }
     }
+
     async hset<T>(collection: string, field: string, value: T): Promise<boolean> {
         try {
             const save = this.redis.set(collection, field, JSON.stringify(value));
@@ -63,6 +67,7 @@ export class RedisService {
             throw new RedisException(message as string, stack as string);
         }
     }
+
     async set<T>(key: string, value: T, expireTime = this.EXPIRE_TIME): Promise<boolean> {
         try {
             const data = typeof value === 'object' ? JSON.stringify(value) : String(value);
@@ -74,6 +79,7 @@ export class RedisService {
             throw new RedisException(message as string, stack as string);
         }
     }
+
     async hdel(collection: string, element: string): Promise<boolean> {
         try {
             return this.redis.hdel(collection, element);
@@ -82,9 +88,11 @@ export class RedisService {
             throw new RedisException(message as string, stack as string);
         }
     }
+
     async del(key: string): Promise<string> {
         return this.redis.del(key) ? 'REDIS_MESSAGE: Eliminado con exito' : 'REDIS_MESSAGE: No se pudo eliminar';
     }
+
     async deleteAll(): Promise<void> {
         try {
             const getAsync = promisify(this.redis.flushall).bind(this.redis);

@@ -1,12 +1,13 @@
 {
-    "name": "cm-idempotencia-sifa",
-    "version": "1.1.6",
+    "name": "redis-idempotence",
+    "version": "1.0.0",
     "main": "dist/index.js",
-    "description": "Libreria para el manejo de la idempotencia",
-    "license": "UNLICENSED",
+    "types": "dist/index.d.ts",
+    "description": "Libreria para el manejo de la idempotencia en multiples llaves y cacheable para metodos",
+    "license": "MIT",
     "author": {
         "email": "bryanscm1@gmail.com",
-        "name": "Bryan Cárdenas"
+        "name": "Bryan S Cárdenas M"
     },
     "scripts": {
         "build": "rimraf dist && tsc -p tsconfig.build.json",
@@ -25,7 +26,11 @@
     "keywords": [
         "idempotend-library",
         "multiples-keys",
-        "sifa"
+        "cacheable",
+        "redis",
+        "nodejs",
+        "decorators",
+        "fastify"
     ],
     "dependencies": {
         "@fastify/cors": "^7.0.0",

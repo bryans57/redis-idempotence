@@ -5,4 +5,5 @@ export const configSchema = Joi.object<IdempotenceConfig>({
     keyId: Joi.array().items(Joi.string().required()).required(),
     serviceName: Joi.string().required(),
     isPubsub: Joi.boolean(),
+    expireTime: Joi.number(),
 });

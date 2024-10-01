@@ -5,6 +5,7 @@ import { afterRequest } from './application/services';
 import { beforeRequest } from './application/services';
 import { IdempotenceConfig, startDependencies } from './configuration';
 import { configSchema, validateData } from './infrastructure';
+import { Cacheable as Caching } from './infrastructure';
 
 /**
  *
@@ -20,4 +21,5 @@ export const handler = (config: IdempotenceConfig): RouteShorthandOptions => {
     return handler;
 };
 
+export const Cacheable = Caching;
 export const dependenciasIdempotencia = startDependencies;
