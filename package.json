@@ -1,6 +1,6 @@
 {
     "name": "redis-idempotence",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Libreria para el manejo de la idempotencia en multiples llaves y cacheable para metodos",
