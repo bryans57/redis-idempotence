@@ -4,9 +4,13 @@ import { RedisService } from '../../../infrastructure/db';
 
 export function Cacheable(
     keyPrefix: string,
-    expireTime = ENV.EXPIRE_TME,
-    unless: (result: any) => boolean = () => false,
+    options?: {
+        expireTime?: number;
+        unless?: (result: any) => boolean;
+    },
 ) {
+    const expireTime = options?.expireTime || ENV.EXPIRE_TME;
+    const unless = options?.unless || (() => false);
     return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
         const originalMethod = descriptor.value;
         descriptor.value = async function (...args: any[]) {
