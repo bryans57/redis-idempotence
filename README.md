@@ -98,7 +98,7 @@ export class ExampleDAO {
     private db = // Your database - Remember it's a example
 
         // Remember it's only a example
-    @Cacheable('exampleKey')
+    @Cacheable('exampleKey', { expireTime: 60, unless: (result) => result === null })
 
     async getData(date: Date): Promise<ExampleDTO> {
         const sqlQuery = `SELECT date FROM example_table WHERE date = $1`;
@@ -111,7 +111,24 @@ export class ExampleDAO {
 }
 ```
 
-##REDIS_CONNECTION_LOCAL_ENV
+### Explain fields
+
+|    Field     | Description                                                                                                                                                                                                                                                                                                                                        |
+|:------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `keyPrefix`  | This is the key identifier that will be complement for a sha256, that it's the arguments you send in the method, if the hash is equal it will return the same data of last time                                                                                                                                                                    |
+|  `options`   | This is the options for the cache, you can define the expiration time and a function to validate the response, if the function return true the response will be cached.                                                                                                                                                                            |
+| `expireTime` | Expiration time of the key in seconds, by default it is 21600 - Equivalent to 6 hours.                                                                                                                                                                                                                                                             |
+|   `unless`   | This is a function that will be executed with the response of the method, if the function return true the response will be cached. By default **unless** is: `(result: any) => boolean = () => false`, so they will to save all the information, that include null, if you want to save only valid data you can add the validation of the example. |
+
+### Warning
+
+You have to be careful with the arguments you send in the method, if you send a object and it have data that change many
+like a date, the hash will be different and the cache will not work.
+
+For example, a complete format of the date it like: `2022-01-01T01:02:03.000Z`, (_Date change every second_) if you send
+a date with this format the cache will not work, you can send the date with the format `2022-01-01` and it will work.
+
+## REDIS_CONNECTION_LOCAL_ENV
 
 This is an environment variable that must be defined, its value is boolean and will be`true` when the redis to be used
 is defined locally, that is, within the same docker container as the application(docker compose ). Here is an example:
