@@ -43,3 +43,6 @@ tslint.json
 # Config files that are not needed in the published package
 jest.config.js
 setup.sh
+
+*.tgz
+.env

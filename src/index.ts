@@ -22,4 +22,4 @@ export const handler = (config: IdempotenceConfig): RouteShorthandOptions => {
 };
 
 export const Cacheable = Caching;
-export const dependenciasIdempotencia = startDependencies;
+export const startIdempDependencies = startDependencies;

@@ -14,7 +14,7 @@ export async function createStatus(
         };
         await db.set(`${collection}-${id}`, status, expireTime);
     } catch (error) {
-        console.log('Error al crear el estado de la petición en redis');
+        console.error('Error al crear el estado de la petición en redis');
         throw error;
     }
 }

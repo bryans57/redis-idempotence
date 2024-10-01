@@ -31,3 +31,5 @@ coverage
 !.vscode/launch.json
 .terraform
 .env
+
+*.tgz

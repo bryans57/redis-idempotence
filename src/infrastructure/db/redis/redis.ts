@@ -16,7 +16,7 @@ export class RedisService {
             this.redis.quit();
             CONTAINER.rebind<RedisClient>(TYPES.RedisAdapter).toConstantValue(getRedisConnection());
         }
-        console.log(this.redis.connected ? 'REDIS IDP: Reconectado' : 'REDIS IDP: No se pudo reconectar');
+        console.info(this.redis.connected ? 'REDIS IDP: Reconectado' : 'REDIS IDP: No se pudo reconectar');
     };
 
     async hgetall<T>(key: string): Promise<T[] | undefined> {

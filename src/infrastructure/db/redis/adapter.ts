@@ -6,12 +6,12 @@ export const getRedisConnection = (): RedisClient => {
         ? redis.createClient({ host: 'redis', connect_timeout: 10000 })
         : redis.createClient(+ENV.REDIS_PORT, ENV.REDIS_HOST, { connect_timeout: 10000 });
     adapter.on('error', (e) => {
-        console.log('REDIS ERROR ==> ', e?.message ?? e);
+        console.error('REDIS ERROR ==> ', e?.message ?? e);
     });
     adapter.on('connect', () => {
         const date = new Date().toLocaleString();
         adapter.rpush('CONEXIONES', `Conectado ${date}`);
-        console.log('CONEXIÓN DE REDIS ESTABLECIDA');
+        console.info('CONEXIÓN DE REDIS ESTABLECIDA');
     });
 
     return adapter;
