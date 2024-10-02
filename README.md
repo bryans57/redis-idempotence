@@ -30,38 +30,6 @@ const exampleRouteHandler = handler({
 |    `keyId`    | The name of the property that contains the request identifier. This property must exist in the request body (*The key identifier can be create for many properties*). For example, the body should include a field `key1` and `key2` that holds the identifier like `${serviceName}_${keyId}` where `keyId` = `key1-key2` |
 | `expireTime`  | Expiration time of the key in seconds, by default it is 21600 - Equivalent to 6 hours.                                                                                                                                                                                                                                    |
 
-### Implementation of the library dependencies
-
-Necesary for the library to work, you must call the `startIdempDependencies()` function when the server starts.
-
-Search for the function in our code where the server is implemented (Fastify). And call the `startIdempDependencies()`
-function, it can be called anywhere in the execution of the application flow, the main idea is that it is always
-executed when our server starts.
-
-**Ejemplo Fastify**
-
-```typescript
-import { application } from './Application';
-import { createDependencyContainer } from '@configuration';
-import { dependenciasIdempotencia } from 'redis-idempotence'; // Import the library and call the function
-import { ENV } from '@util';
-
-const start = async () => {
-    // Start the server
-    const port = ENV.PORT;
-    try {
-        const server = await application.listen(port, '0.0.0.0');
-        createDependencyContainer();
-        dependenciasIdempotencia(); // Call the function
-        console.log(`Application running on ${server}`);
-    } catch (error) {
-        console.error(error);
-        await application.close();
-    }
-};
-start();
-```
-
 ### Implementation of the route
 
 Finally, we implement the route in the following way:
@@ -100,13 +68,13 @@ export class ExampleDAO {
         // Remember it's only a example
     @Cacheable('exampleKey', { expireTime: 60, unless: (result) => result === null })
 
-    async getData(date: Date): Promise<ExampleDTO> {
-        const sqlQuery = `SELECT date FROM example_table WHERE date = $1`;
+    async getExampleData(date: string): Promise<ExampleDTO> { // Read Warning
+        const sqlQuery = `SELECT example_data FROM example_table WHERE date = $1`;
 
-        const data = await this.db.oneOrNone<ExampleDTO>(sqlQuery, [
-            date.toISOString().split('T')[0],
+        const response = await this.db.oneOrNone<ExampleDTO>(sqlQuery, [
+            date,
         ]);
-        return data;
+        return response;
     }
 }
 ```

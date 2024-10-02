@@ -11,3 +11,9 @@ export const startDependencies = (): void => {
     //Service
     CONTAINER.bind(RedisService).toSelf().inRequestScope();
 };
+
+export const ensureDependenciesStarted = () => {
+    if (!CONTAINER.isBound(TYPES.RedisAdapter)) {
+        startDependencies();
+    }
+};

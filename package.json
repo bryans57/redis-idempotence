@@ -38,6 +38,7 @@
         "@fastify/helmet": "^8.0.0",
         "@fastify/swagger": "^6.0.0",
         "@google-cloud/firestore": "5.0.2",
+        "@types/module-alias": "^2.0.4",
         "crypto": "^1.0.1",
         "dotenv": "^16.0.0",
         "fastify": "^3.28.0",

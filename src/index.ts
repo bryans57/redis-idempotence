@@ -1,9 +1,9 @@
-import 'reflect-metadata';
 import 'module-alias/register';
+import 'reflect-metadata';
 import { RouteShorthandOptions } from 'fastify';
 import { afterRequest } from './application/services';
 import { beforeRequest } from './application/services';
-import { IdempotenceConfig, startDependencies } from './configuration';
+import { IdempotenceConfig, ensureDependenciesStarted } from './configuration';
 import { configSchema, validateData } from './infrastructure';
 import { Cacheable as Caching } from './infrastructure';
 
@@ -13,6 +13,7 @@ import { Cacheable as Caching } from './infrastructure';
  * @returns RouteShorthandOptions
  */
 export const handler = (config: IdempotenceConfig): RouteShorthandOptions => {
+    ensureDependenciesStarted();
     const data = validateData<IdempotenceConfig>(configSchema, config);
     const handler: RouteShorthandOptions = {
         preHandler: async (r, rp, dn) => beforeRequest(r, rp, dn, data),
@@ -22,4 +23,3 @@ export const handler = (config: IdempotenceConfig): RouteShorthandOptions => {
 };
 
 export const Cacheable = Caching;
-export const startIdempDependencies = startDependencies;

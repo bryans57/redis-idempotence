@@ -1,5 +1,5 @@
 import { hashData, ENV } from '../../../util';
-import { CONTAINER } from '../../../configuration';
+import { CONTAINER, ensureDependenciesStarted } from '../../../configuration';
 import { RedisService } from '../../../infrastructure/db';
 
 export function Cacheable(
@@ -9,6 +9,7 @@ export function Cacheable(
         unless?: (result: any) => boolean;
     },
 ) {
+    ensureDependenciesStarted();
     const expireTime = options?.expireTime || ENV.EXPIRE_TME;
     const unless = options?.unless || (() => false);
     return function (_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
