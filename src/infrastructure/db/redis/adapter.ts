@@ -1,5 +1,5 @@
 import redis, { RedisClient } from 'redis';
-import { ENV } from '../../../util';
+import { ENV } from '@util';
 
 export const getRedisConnection = (): RedisClient => {
     const adapter = ENV.REDIS_CONNECTION_LOCAL_ENV

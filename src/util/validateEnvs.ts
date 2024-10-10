@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 dotenv.config();
-import { ENV_VALIDATION_ERROR, REDIS_CONNECTION_LOCAL_ENV } from '../domain/exceptions';
+import { ENV_VALIDATION_ERROR, REDIS_CONNECTION_LOCAL_ENV } from '@domain/exceptions';
 
 export const validateEnvs = (ENV: any) => {
     const errors = [];

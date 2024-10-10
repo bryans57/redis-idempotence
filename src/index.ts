@@ -1,9 +1,9 @@
 import 'module-alias/register';
 import 'reflect-metadata';
 import { RouteShorthandOptions } from 'fastify';
-import { afterRequest } from './application/services';
-import { beforeRequest } from './application/services';
-import { IdempotenceConfig, ensureDependenciesStarted } from './configuration';
+import { afterRequest } from '@application/services';
+import { beforeRequest } from '@application/services';
+import { IdempotenceConfig, ensureDependenciesStarted } from '@configuration';
 import { configSchema, validateData } from './infrastructure';
 import { Cacheable as Caching } from './infrastructure';
 

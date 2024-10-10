@@ -1,12 +1,12 @@
-import { CONTAINER, IdempotenceConfig } from '../../configuration';
-import { StatusModel } from '../../domain/models';
-import { reqAlreadyDone, reqInPorcess } from '../../domain/response/Response';
-import { RedisService } from '../../infrastructure/db';
-import { getId } from '../../infrastructure/util';
-import { getPubsubBody } from '../../infrastructure/validations';
-import { createStatus } from '../../util';
+import { CONTAINER, IdempotenceConfig } from '@configuration';
+import { StatusModel } from '@domain/models';
+import { reqAlreadyDone, reqInPorcess } from '@domain/response/Response';
+import { RedisService } from '@infrastructure/db';
+import { getId } from '@infrastructure/util';
+import { getPubsubBody } from '@infrastructure/validations';
+import { createStatus } from '@util';
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify';
-import { MESSAGES } from '../../domain/response/Messages';
+import { MESSAGES } from '@domain/response/Messages';
 
 export const beforeRequest = async (
     req: FastifyRequest,

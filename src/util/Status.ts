@@ -1,5 +1,5 @@
-import { StatusModel } from '../domain/models';
-import { RedisService } from '../infrastructure/db';
+import { StatusModel } from '@domain/models';
+import { RedisService } from '@infrastructure/db';
 
 export async function createStatus(
     collection: string,

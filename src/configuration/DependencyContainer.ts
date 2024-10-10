@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import { RedisClient } from 'redis';
-import { getRedisConnection, RedisService } from '../infrastructure';
+import { getRedisConnection, RedisService } from '@infrastructure/db';
 import { TYPES } from './Types';
 
 export const CONTAINER = new Container();

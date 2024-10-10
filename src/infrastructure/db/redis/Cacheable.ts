@@ -1,6 +1,7 @@
-import { hashData, ENV } from '../../../util';
-import { CONTAINER, ensureDependenciesStarted } from '../../../configuration';
-import { RedisService } from '../../../infrastructure/db';
+import 'reflect-metadata';
+import { hashData, ENV } from '@util';
+import { CONTAINER, ensureDependenciesStarted } from '@configuration';
+import { RedisService } from '@infrastructure/db';
 
 export function Cacheable(
     keyPrefix: string,

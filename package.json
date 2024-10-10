@@ -10,7 +10,7 @@
         "name": "Bryan S Cárdenas M"
     },
     "scripts": {
-        "build": "rimraf dist && tsc -p tsconfig.build.json",
+        "build": "rimraf dist && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
         "lint": "eslint . --ext .ts --fix",
         "format": "prettier --write \"./src/**/*.ts\"",
         "format-check": "prettier --list-different \"./src/**/*.ts\"",
@@ -38,23 +38,25 @@
         "@fastify/helmet": "^8.0.0",
         "@fastify/swagger": "^6.0.0",
         "@google-cloud/firestore": "5.0.2",
-        "@types/module-alias": "^2.0.4",
         "crypto": "^1.0.1",
         "dotenv": "^16.0.0",
         "fastify": "^3.28.0",
         "inversify": "6.0.1",
         "joi": "17.6.0",
-        "module-alias": "2.2.2",
+        "module-alias": "^2.2.3",
         "pg-promise": "^10.11.1",
         "redis": "^3.1.2",
-        "reflect-metadata": "0.1.13"
+        "reflect-metadata": "^0.2.2"
     },
     "devDependencies": {
+        "@types/module-alias": "^2.0.4",
+        "@types/inversify": "^2.0.33",
         "@commitlint/cli": "16.2.4",
         "@commitlint/config-conventional": "16.2.4",
         "@types/jest": "27.4.1",
-        "@types/node": "^18.15.3",
+        "@types/node": "^22.7.5",
         "@types/redis": "^2.8.32",
+        "@types/reflect-metadata": "^0.1.0",
         "@types/supertest": "2.0.12",
         "@typescript-eslint/eslint-plugin": "5.21.0",
         "@typescript-eslint/parser": "5.21.0",

@@ -1,10 +1,10 @@
-import { getPubsubBody } from '../../infrastructure/validations';
-import { CONTAINER, IdempotenceConfig } from '../../configuration';
-import { StatusModel } from '../../domain/models';
-import { MESSAGES } from '../../domain/response/Messages';
-import { RedisService } from '../../infrastructure/db';
-import { getId } from '../../infrastructure/util';
-import { isError } from '../../util';
+import { getPubsubBody } from '@infrastructure/validations';
+import { CONTAINER, IdempotenceConfig } from '@configuration';
+import { StatusModel } from '@domain/models';
+import { MESSAGES } from '@domain/response/Messages';
+import { RedisService } from '@infrastructure/db';
+import { getId } from '@infrastructure/util';
+import { isError } from '@util';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 export const afterRequest = async (

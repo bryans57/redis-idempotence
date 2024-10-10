@@ -1,4 +1,4 @@
-import { IdempotenceConfig } from '../../configuration';
+import { IdempotenceConfig } from '@configuration';
 import Joi from 'joi';
 
 export const configSchema = Joi.object<IdempotenceConfig>({

@@ -1,7 +1,7 @@
 import Joi from 'joi';
-import { parse, decode } from '../../util';
+import { parse, decode } from '@util';
 import { PubSubPayload, pubSubSchema } from '..';
-import { BadMessageException } from '../../domain/exceptions';
+import { BadMessageException } from '@domain/exceptions';
 
 type Schema = Joi.ObjectSchema | Joi.ArraySchema;
 type Body = Record<string, unknown> | undefined | unknown;

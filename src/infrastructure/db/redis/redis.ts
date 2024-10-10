@@ -1,10 +1,11 @@
+import 'reflect-metadata';
 import { injectable } from 'inversify';
-import { RedisClient } from 'redis';
-import { CONTAINER, TYPES } from '../../../configuration';
 import { promisify } from 'util';
-import { RedisException } from '../../../domain/exceptions';
+import { RedisClient } from 'redis';
+import { CONTAINER, TYPES } from '@configuration';
+import { RedisException } from '@domain/exceptions';
 import { getRedisConnection } from './adapter';
-import { ENV } from '../../../util/Env';
+import { ENV } from '@util';
 
 @injectable()
 export class RedisService {
